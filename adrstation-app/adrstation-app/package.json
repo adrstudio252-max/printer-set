@@ -1,0 +1,52 @@
+{
+  "name": "adrstation",
+  "productName": "AdrStation",
+  "version": "1.0.0",
+  "description": "AdrStation - Desktop app pendamping ADR Photobooth. Terima foto dari tablet/iPad lewat AirLink dan cetak ke printer Epson L8050 (atau printer lain) dengan berbagai ukuran kertas.",
+  "main": "main.js",
+  "author": "ADR Photobooth",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "dist:win": "electron-builder --win --x64",
+    "dist:mac": "electron-builder --mac --universal",
+    "dist": "electron-builder -mw"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "pdf-lib": "^1.17.1",
+    "qrcode": "^1.5.3",
+    "pdf-to-printer": "^5.6.0"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.adrbooth.adrstation",
+    "productName": "AdrStation",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "**/*",
+      "!release/**"
+    ],
+    "win": {
+      "target": ["nsis"],
+      "icon": "renderer/icons/icon.ico"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "renderer/icons/icon.icns",
+      "category": "public.app-category.photography"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

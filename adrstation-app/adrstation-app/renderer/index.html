@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline';">
+<title>AdrStation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">AdrStation</span>
+    </div>
+    <div class="server-pill" id="server-pill">
+      <span class="dot" id="server-dot"></span>
+      <span id="server-pill-text">Starting…</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+    <button class="tab-btn" data-tab="printer">Printer Settings</button>
+    <button class="tab-btn" data-tab="log">Print Log</button>
+  </div>
+
+  <!-- ===================== DASHBOARD ===================== -->
+  <section class="tab-panel active" id="tab-dashboard">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Pair with the ADR Photobooth tablet</div>
+        <div class="card-sub">On the tablet: Settings → Adr AirLink → Scan QR Code. Make sure this laptop and the tablet are on the same Wi-Fi network.</div>
+        <div class="qr-wrap">
+          <img id="qr-image" alt="Pairing QR code" />
+          <div class="pairing-info">
+            <div class="pairing-row"><span>IP Address</span><b id="lan-ip">—</b></div>
+            <div class="pairing-row"><span>Port</span><b id="lan-port">—</b></div>
+            <div class="pairing-row"><span>Pairing Code</span><b id="pairing-code">—</b></div>
+          </div>
+        </div>
+        <button class="btn btn-ghost" id="btn-regen-code">🔄 Regenerate Pairing Code</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Status</div>
+        <div class="status-line"><span>Server</span><b id="status-server">—</b></div>
+        <div class="status-line"><span>Active Printer</span><b id="status-printer">—</b></div>
+        <div class="status-line"><span>Paper Size</span><b id="status-paper">—</b></div>
+        <div class="status-line"><span>Borderless</span><b id="status-borderless">—</b></div>
+        <div class="callout">
+          <b>How it works:</b> keep this app running on the laptop connected to your printer. Photos sent from the tablet over Wi-Fi (AirLink) are printed here automatically — no need to touch this laptop during the event.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRINTER SETTINGS ===================== -->
+  <section class="tab-panel" id="tab-printer">
+    <div class="card">
+      <div class="card-title">System Printer</div>
+      <div class="card-sub">Choose the printer installed on this laptop (e.g. Epson L8050).</div>
+      <select id="select-printer" class="input"></select>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Paper Size</div>
+      <div class="card-sub">Choose the paper size loaded in the printer. This decides how photos from the tablet are scaled and cropped.</div>
+      <div class="paper-grid" id="paper-grid"></div>
+
+      <button class="btn btn-ghost" id="btn-add-custom-paper">+ Add Custom Paper Size</button>
+      <div class="custom-paper-form" id="custom-paper-form" style="display:none;">
+        <input type="text" id="cp-label" class="input" placeholder="Label, e.g. 6 x 9 in">
+        <input type="number" id="cp-width" class="input" placeholder="Width (mm)">
+        <input type="number" id="cp-height" class="input" placeholder="Height (mm)">
+        <label class="checkbox-row"><input type="checkbox" id="cp-borderless" checked> Supports borderless</label>
+        <button class="btn btn-primary" id="btn-save-custom-paper">Save</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Print Options</div>
+      <div class="row-between">
+        <div>
+          <div class="pf-label">Borderless Print</div>
+          <div class="card-sub">Print edge-to-edge with no white border (if the paper size supports it).</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="toggle-borderless"><span class="slider"></span></label>
+      </div>
+      <div class="row-between">
+        <div>
+          <div class="pf-label">Custom Margin</div>
+          <div class="card-sub">Only used when borderless is off, or to override the default margin.</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="toggle-custom-margin"><span class="slider"></span></label>
+      </div>
+      <div class="margin-grid" id="margin-fields" style="display:none;">
+        <label>Top (mm)<input type="number" id="margin-top" class="input" step="0.5"></label>
+        <label>Right (mm)<input type="number" id="margin-right" class="input" step="0.5"></label>
+        <label>Bottom (mm)<input type="number" id="margin-bottom" class="input" step="0.5"></label>
+        <label>Left (mm)<input type="number" id="margin-left" class="input" step="0.5"></label>
+      </div>
+      <label class="field-row">Copies per photo
+        <input type="number" id="copies" class="input" min="1" value="1">
+      </label>
+      <div class="row-between">
+        <div>
+          <div class="pf-label">Auto-print on receive</div>
+          <div class="card-sub">Print immediately when a photo arrives from the tablet, with no confirmation click needed here.</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="toggle-auto-print" checked><span class="slider"></span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRINT LOG ===================== -->
+  <section class="tab-panel" id="tab-log">
+    <div class="card">
+      <div class="card-title">Recent Print Jobs</div>
+      <div class="card-sub">Live log of photos received from the tablet and their print status.</div>
+      <div id="job-list" class="job-list"></div>
+    </div>
+  </section>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
